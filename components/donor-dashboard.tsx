@@ -479,6 +479,251 @@ export function DonorDashboard({ user, onLogout, onShowMap, donations, onNewDona
               </div>
             </div>
           )}
+
+          {activeTab === "impact" && (
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold text-gray-900">Impact Report</h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Donations</CardTitle>
+                    <Package className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-green-600">{donations.length}</div>
+                    <p className="text-xs text-muted-foreground">All time contributions</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">People Fed</CardTitle>
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-green-600">{donations.length * 12}</div>
+                    <p className="text-xs text-muted-foreground">Estimated meals provided</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Waste Diverted</CardTitle>
+                    <Package className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-green-600">{donations.length * 3.5}kg</div>
+                    <p className="text-xs text-muted-foreground">From landfills</p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">CO₂ Saved</CardTitle>
+                    <Heart className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-green-600">{donations.length * 2.1}kg</div>
+                    <p className="text-xs text-muted-foreground">Carbon footprint reduced</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Donation Breakdown</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {["packed food", "fresh food", "organic waste"].map((type) => {
+                      const count = donations.filter((d) => d.type === type).length
+                      const percentage = donations.length > 0 ? (count / donations.length) * 100 : 0
+                      return (
+                        <div key={type} className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span className="capitalize">{type}</span>
+                            <span>
+                              {count} donations ({percentage.toFixed(0)}%)
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="bg-green-600 h-2 rounded-full" style={{ width: `${percentage}%` }}></div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Monthly Impact Trend</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-center py-8">
+                    <Heart className="h-16 w-16 text-green-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Making a Difference!</h3>
+                    <p className="text-gray-600">
+                      Your {donations.length} donations have helped feed {donations.length * 12} people and diverted{" "}
+                      {donations.length * 3.5}kg of waste from landfills.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {activeTab === "connections" && (
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold text-gray-900">My Connections</h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="h-5 w-5 text-green-600" />
+                      Connected NGO Agents
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {donations
+                        .filter((d) => d.acceptedBy && (d.type === "packed food" || d.type === "fresh food"))
+                        .reduce((agents: string[], donation) => {
+                          if (donation.acceptedBy && !agents.includes(donation.acceptedBy)) {
+                            agents.push(donation.acceptedBy)
+                          }
+                          return agents
+                        }, [])
+                        .map((agent, index) => (
+                          <div key={index} className="flex items-center gap-3 p-3 border rounded-lg">
+                            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                              <Users className="h-5 w-5 text-blue-600" />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-semibold">{agent}</h3>
+                              <p className="text-sm text-gray-600">NGO Agent</p>
+                            </div>
+                            <Badge variant="secondary">Connected</Badge>
+                          </div>
+                        ))}
+                      {donations.filter((d) => d.acceptedBy && (d.type === "packed food" || d.type === "fresh food"))
+                        .length === 0 && <p className="text-gray-500 text-center py-4">No NGO connections yet</p>}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Package className="h-5 w-5 text-green-600" />
+                      Connected Biogas Agents
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {donations
+                        .filter((d) => d.acceptedBy && d.type === "organic waste")
+                        .reduce((agents: string[], donation) => {
+                          if (donation.acceptedBy && !agents.includes(donation.acceptedBy)) {
+                            agents.push(donation.acceptedBy)
+                          }
+                          return agents
+                        }, [])
+                        .map((agent, index) => (
+                          <div key={index} className="flex items-center gap-3 p-3 border rounded-lg">
+                            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                              <Package className="h-5 w-5 text-green-600" />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="font-semibold">{agent}</h3>
+                              <p className="text-sm text-gray-600">Biogas Agent</p>
+                            </div>
+                            <Badge variant="secondary">Connected</Badge>
+                          </div>
+                        ))}
+                      {donations.filter((d) => d.acceptedBy && d.type === "organic waste").length === 0 && (
+                        <p className="text-gray-500 text-center py-4">No biogas connections yet</p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Connection Statistics</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="text-center p-4 border rounded-lg">
+                      <div className="text-2xl font-bold text-green-600">
+                        {
+                          donations
+                            .filter((d) => d.acceptedBy)
+                            .reduce((agents: string[], donation) => {
+                              if (donation.acceptedBy && !agents.includes(donation.acceptedBy)) {
+                                agents.push(donation.acceptedBy)
+                              }
+                              return agents
+                            }, []).length
+                        }
+                      </div>
+                      <p className="text-sm text-gray-600">Total Connections</p>
+                    </div>
+                    <div className="text-center p-4 border rounded-lg">
+                      <div className="text-2xl font-bold text-blue-600">
+                        {
+                          donations
+                            .filter((d) => d.acceptedBy && (d.type === "packed food" || d.type === "fresh food"))
+                            .reduce((agents: string[], donation) => {
+                              if (donation.acceptedBy && !agents.includes(donation.acceptedBy)) {
+                                agents.push(donation.acceptedBy)
+                              }
+                              return agents
+                            }, []).length
+                        }
+                      </div>
+                      <p className="text-sm text-gray-600">NGO Agents</p>
+                    </div>
+                    <div className="text-center p-4 border rounded-lg">
+                      <div className="text-2xl font-bold text-green-600">
+                        {
+                          donations
+                            .filter((d) => d.acceptedBy && d.type === "organic waste")
+                            .reduce((agents: string[], donation) => {
+                              if (donation.acceptedBy && !agents.includes(donation.acceptedBy)) {
+                                agents.push(donation.acceptedBy)
+                              }
+                              return agents
+                            }, []).length
+                        }
+                      </div>
+                      <p className="text-sm text-gray-600">Biogas Agents</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {donations.filter((d) => d.acceptedBy).length === 0 && (
+                <Card>
+                  <CardContent className="p-6 text-center">
+                    <Users className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">No Connections Yet</h3>
+                    <p className="text-gray-600 mb-4">
+                      Start making donations to connect with NGO and biogas agents in your area.
+                    </p>
+                    <Button onClick={() => setShowDonationModal(true)} className="bg-green-600 hover:bg-green-700">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create Your First Donation
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          )}
         </main>
       </div>
     </div>

@@ -1,14 +1,24 @@
-# Project Refed Connect
+# RefedConnect - Food Sharing Platform
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+*A comprehensive platform connecting food donors with NGOs and biogas agents*
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/cse22148-1595s-projects/v0-project-refed-connect)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/Lq5AGkJkClt)
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+RefedConnect is a food sharing platform that connects:
+- **Donors**: Share excess food with those in need
+- **NGO Agents**: Manage food distribution to communities  
+- **Biogas Agents**: Convert organic waste into renewable energy
+
+## Features
+
+- Real-time GPS tracking and navigation
+- Google OAuth authentication
+- Role-based dashboards
+- Interactive maps with directions
+- Food donation management
+- Waste collection scheduling
 
 ## Deployment
 
@@ -16,15 +26,26 @@ Your project is live at:
 
 **[https://vercel.com/cse22148-1595s-projects/v0-project-refed-connect](https://vercel.com/cse22148-1595s-projects/v0-project-refed-connect)**
 
-## Build your app
+## Getting Started
 
-Continue building your app on:
+1. Clone this repository
+2. Install dependencies: `npm install`
+3. Set up environment variables for Google OAuth
+4. Run the development server: `npm run dev`
 
-**[https://v0.app/chat/projects/Lq5AGkJkClt](https://v0.app/chat/projects/Lq5AGkJkClt)**
+## Environment Variables
 
-## How It Works
+Create a `.env.local` file with:
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+\`\`\`
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+\`\`\`
+
+## Technology Stack
+
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- Google Maps API
+- Google OAuth
